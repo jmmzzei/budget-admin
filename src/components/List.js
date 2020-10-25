@@ -5,21 +5,52 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Icon from '@material-ui/core/Icon'
 import { Item } from './Item'
 
-export const List = ({ update, onUpdate }) => {
+export const List = ({ update, onUpdate, reduced, longListIsVisible }) => {
   let [operations, setOperations] = useState([])
+  let [selection, setSelection] = useState('ALL')
   let [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/')
-      .then(res => res.json())
-      .then(data => {
-        setOperations(data.operations)
-        setLoading(false)
-      })
+    if (reduced) {
+      fetch('/api/group?q=10')
+        .then(res => res.json())
+        .then(data => {
+          setOperations(data.operationGroup)
+          setLoading(false)
+        })
+    } else {
+      fetch('/api/')
+        .then(res => res.json())
+        .then(data => {
+          setOperations(data.operations)
+          setLoading(false)
+        })
+    }
   }, [update])
 
+  const changeSelection = e => {
+    const selected = e.target.innerText
+    setSelection(selected)
+  }
+
   return (
-    <section className={'list '}>
+    <section
+      className={
+        longListIsVisible === true && reduced === true ? 'list light' : 'list '
+      }>
+      {!reduced && (
+        <div className="buttons-container">
+          <ButtonGroup
+            variant="text"
+            color="primary"
+            aria-label="text primary button group">
+            <Button onClick={changeSelection}>All</Button>
+            <Button onClick={changeSelection}>Income</Button>
+            <Button onClick={changeSelection}>Outcome</Button>
+          </ButtonGroup>
+        </div>
+      )}
+
       {!loading ? (
         <ul>
           <li className="item header">
@@ -29,22 +60,39 @@ export const List = ({ update, onUpdate }) => {
               </div>
               <div className="concept">Content</div>
               <div className="amount">Amount</div>
+              {reduced || <div className="void"></div>}
             </div>
           </li>
 
           {operations &&
-            operations.map((e, i) => (
-              <Item
-                reduced={reduced}
-                key={e.id}
-                id={e.id}
-                concept={e.concept}
-                amount={e.amount}
-                type={e.type}
-                date={e.date}
-                onUpdate={onUpdate}
-              />
-            ))}
+            (selection !== 'ALL'
+              ? operations.map(
+                  (e, i) =>
+                    selection === e.type.toUpperCase() && (
+                      <Item
+                        reduced={reduced}
+                        key={e.id}
+                        id={e.id}
+                        concept={e.concept}
+                        amount={e.amount}
+                        type={e.type}
+                        date={e.date}
+                        onUpdate={onUpdate}
+                      />
+                    ),
+                )
+              : operations.map((e, i) => (
+                  <Item
+                    reduced={reduced}
+                    key={e.id}
+                    id={e.id}
+                    concept={e.concept}
+                    amount={e.amount}
+                    type={e.type}
+                    date={e.date}
+                    onUpdate={onUpdate}
+                  />
+                )))}
         </ul>
       ) : (
         <div className="progress">

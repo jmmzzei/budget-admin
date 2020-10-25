@@ -1,7 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Icon from '@material-ui/core/Icon'
+import { Form } from './Form'
 
-export const Item = ({ id, concept, amount, type, date, onUpdate }) => {
+export const Item = ({
+  id,
+  concept,
+  amount,
+  type,
+  date,
+  onUpdate,
+  reduced,
+}) => {
+  let [showForm, setShowForm] = useState(false)
+  let [newData, setNewData] = useState({
+    concept: concept,
+    amount: amount,
+    date: date,
+  })
+
   const deleteOperation = () => {
     fetch(`/api/${id}`, {
       method: 'DELETE',
@@ -12,7 +28,21 @@ export const Item = ({ id, concept, amount, type, date, onUpdate }) => {
       })
   }
 
-  const editOperation = id => {}
+  const editOperation = id => {
+    setShowForm(!showForm)
+  }
+
+  useEffect(()=>{
+  },[])
+  const updateItem = e => {
+    onUpdate({ concept: e.concept, amount: e.amount, date: e.date })
+    setNewData({ concept: e.concept, amount: e.amount, date: e.date })
+    setShowForm(false)
+  }
+
+  useEffect(() => {
+    setNewData({ concept: concept, amount: amount, date: date })
+  }, [concept, date, amount])
 
   return (
     <li className="item">
@@ -24,17 +54,34 @@ export const Item = ({ id, concept, amount, type, date, onUpdate }) => {
             <Icon style={{ color: 'red' }}>west</Icon>
           )}
         </div>
-        <div className="concept">{concept}</div>
-        <div className="amount">${amount}</div>
-        <div className="list-buttons">
-          <div className="icon">
-            <Icon onClick={editOperation}>create</Icon>
+        <div className="concept">{newData.concept}</div>
+        <div className="amount">${newData.amount}</div>
+        {reduced || (
+          <div className="list-buttons">
+            <div className="icon">
+              <Icon onClick={editOperation}>create</Icon>
+            </div>
+            <div className="icon">
+              <Icon onClick={deleteOperation}>delete</Icon>
+            </div>
           </div>
-          <div className="icon">
-            <Icon onClick={deleteOperation}>delete</Icon>
-          </div>
-        </div>
+        )}
       </div>
+
+      {showForm && (
+        <div className="item-form">
+          <Form
+            reduced
+            onUpdate={updateItem}
+            prevValues={{
+              id: id,
+              date: date,
+              concept: concept,
+              amount: amount,
+            }}
+          />
+        </div>
+      )}
     </li>
   )
 }

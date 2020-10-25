@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 export const Balance = () => {
   let [balance, setBalance] = useState({ income: 0, outcome: 0, total: 0 })
 
@@ -6,7 +7,6 @@ export const Balance = () => {
     fetch('/api/balance')
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setBalance(data.balance)
       })
   }, [])

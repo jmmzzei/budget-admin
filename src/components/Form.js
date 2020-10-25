@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
-export const Form = () => {
+
+export const Form = ({ onUpdate, reduced, prevValues }) => {
   let [state, setState] = useState({
     concept: '',
     amount: '',
@@ -14,18 +15,50 @@ export const Form = () => {
 
   const submit = e => {
     e.preventDefault()
-    fetch('/api/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(state),
-    })
-      .then(res => res.json())
-      .then(data => {
-        let jsonData = JSON.parse(data.created)
-        onUpdate(JSON.parse(data.created))
-        console.log(JSON.parse(data.created))
+    if (reduced) {
+      fetch(`/api/${prevValues.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: prevValues.id,
+          date: state.date,
+          concept: state.concept,
+          amount: state.amount,
+        }),
       })
+        .then(res => res.json())
+        .then(data => {
+          onUpdate({
+            id: prevValues.id,
+            date: state.date,
+            concept: state.concept,
+            amount: state.amount,
+          })
+        })
+    } else {
+      fetch('/api/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state),
+      })
+        .then(res => res.json())
+        .then(data => {
+          let jsonData = JSON.parse(data.created)
+          onUpdate(JSON.parse(data.created))
+        })
+    }
   }
+
+  useEffect(() => {
+    if (prevValues) {
+      setState({
+        concept: prevValues.concept,
+        amount: prevValues.amount,
+        date: prevValues.date,
+      })
+    }
+  }, [])
+
   return (
     <>
       <form className="form">
@@ -59,32 +92,36 @@ export const Form = () => {
             onChange={inputHandler}
           />
         </fieldset>
-        <label htmlFor="type">Operation:</label>
-        <fieldset id="type">
-          <div className="radio-container">
-            <label htmlFor="income">Income</label>
-            <input
-              type="radio"
-              id="income"
-              name="type"
-              defaultChecked="checked"
-              value="Income"
-              onChange={inputHandler}
-            />
-          </div>
-          <div className="radio-container">
-            <label htmlFor="outcome">Outcome</label>
-            <input
-              onChange={inputHandler}
-              type="radio"
-              id="outcome"
-              value="Outcome"
-              name="type"
-            />
-          </div>
-        </fieldset>
+        {!reduced && (
+          <>
+            <label htmlFor="type">Operation:</label>
+            <fieldset id="type">
+              <div className="radio-container">
+                <label htmlFor="income">Income</label>
+                <input
+                  type="radio"
+                  id="income"
+                  name="type"
+                  defaultChecked="checked"
+                  value="Income"
+                  onChange={inputHandler}
+                />
+              </div>
+              <div className="radio-container">
+                <label htmlFor="outcome">Outcome</label>
+                <input
+                  onChange={inputHandler}
+                  type="radio"
+                  id="outcome"
+                  value="Outcome"
+                  name="type"
+                />
+              </div>
+            </fieldset>
+          </>
+        )}
         <Button color="primary" onClick={submit}>
-          CREATE
+          {reduced ? 'EDIT' : 'CREATE'}
         </Button>
       </form>
     </>
