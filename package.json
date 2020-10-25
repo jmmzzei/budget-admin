@@ -23,6 +23,7 @@
     "sequelize": "^6.3.5"
   },
   "scripts": {
+    "build": "node ./buildScript",
     "start:server": "cross-env NODE_ENV=development nodemon server/index.js",
     "start:react": "react-scripts start",
     "build:react": "react-scripts build",
