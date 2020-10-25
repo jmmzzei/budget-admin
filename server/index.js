@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const { sequelize, operation } = require('./models/index')
 const compression = require('compression')
 const helmet = require('helmet')
 const cors = require('cors')
@@ -23,6 +24,15 @@ if (process.env.NODE_ENV && process.env.NODE_ENV !== 'development') {
     res.sendFile('build/index.html', { root: __dirname })
   })
 }
+
+sequelize
+  .sync()
+  .then(() => {
+    console.log('Connection has been established successfully.')
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err)
+  })
 
 app.listen(app.get('port'), () => {
   console.log(`Server running on port ${app.get('port')}`)
