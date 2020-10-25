@@ -8,6 +8,7 @@
   border-radius: 10px;
   padding: 10px;
   background-color: var(--very-lightgray);
+  @include show('form', translateY(30px));
 
   label {
     color: var(--darkgray);

@@ -1,0 +1,15 @@
+@mixin show($name,$translation, $delay:0s){
+  animation: show#{$name} 0.4s $delay ease forwards;
+
+@keyframes show#{$name}{
+  0%{
+    opacity: 0;
+    transform: $translation;
+  }
+  100%{
+    opacity: 1;
+    transform:translate(0);
+  }
+}
+}
+
