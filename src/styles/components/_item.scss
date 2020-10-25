@@ -22,6 +22,7 @@
     .concept {
       padding: 0 10px;
       width: 100%;
+      word-break: break-all;
     }
 
     .amount {
@@ -58,13 +59,13 @@
   font-weight: 600;
 }
 
-@keyframes showItem{
-  0%{
+@keyframes showItem {
+  0% {
     opacity: 0;
-    transform:translateX(30px);
+    transform: translateX(30px);
   }
-  100%{
+  100% {
     opacity: 1;
-    transform:translateX(0);
+    transform: translateX(0);
   }
 }
