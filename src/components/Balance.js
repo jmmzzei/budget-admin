@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export const Balance = () => {
+export const Balance = ({update}) => {
   let [balance, setBalance] = useState({ income: 0, outcome: 0, total: 0 })
 
   useEffect(() => {
@@ -9,7 +9,7 @@ export const Balance = () => {
       .then(data => {
         setBalance(data.balance)
       })
-  }, [])
+  }, [update])
 
   return (
     <section className="balance">

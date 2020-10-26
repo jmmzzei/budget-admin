@@ -33,7 +33,7 @@ function App() {
 
   return (
     <main className="home">
-      <Balance />
+      <Balance update={update}/>
 
       <div className="container">
         <h2>LAST OPERATIONS</h2>
