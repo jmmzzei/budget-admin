@@ -4,7 +4,7 @@ let sequelize = require('../models/index')['sequelize']
 exports.getAllOperations = async (req, res) => {
   try {
     let operations = await operationModel.findAll({
-      order: sequelize.literal('id DESC'),
+      order: [['id', 'DESC']],
     })
     return res.json({ operations: operations })
   } catch (error) {
@@ -17,7 +17,7 @@ exports.getOperationGroup = async (req, res) => {
     let limit = req.query.q
     let operationGroup = await operationModel.findAll({
       limit: limit,
-      order: sequelize.literal('id DESC'),
+      order: [['id', 'DESC']],
     })
     res.json({ operationGroup: operationGroup })
   } catch (error) {
@@ -73,10 +73,12 @@ exports.createOperation = async (req, res) => {
 
 exports.deleteOperation = async (req, res) => {
   try {
-    let deleted = await sequelize.query(
-      'delete from operations where id = ' + req.params.id,
-    )
-    res.json({ deleted: req.params.id })
+    const deleted = await operationModel.destroy({
+      where: {
+        id: req.params.id,
+      },
+    })
+    res.json({ status: deleted })
   } catch (error) {
     return res.status(500).send(error.message)
   }
