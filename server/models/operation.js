@@ -1,6 +1,6 @@
 module.exports = (sequelize, type) => {
   const operationModel = sequelize.define(
-    "operation",
+    'operation',
     {
       id: {
         type: type.SMALLINT(),
@@ -20,23 +20,22 @@ module.exports = (sequelize, type) => {
         allowNull: false,
       },
       date: {
-        type: "TIMESTAMP",
-        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+        type: type.DATEONLY,
+        defaultValue: sequelize.NOW,
         allowNull: false,
       },
       createdat: {
-        type: "TIMESTAMP",
-        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+        type: type.DATEONLY,
+        defaultValue: sequelize.NOW,
         allowNull: false,
       },
       updatedat: {
-        type: "TIMESTAMP",
-        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+        type: type.DATEONLY,
+        defaultValue: sequelize.NOW,
         allowNull: false,
       },
     },
-    { timestamps: false }
-  );
-
-  return operationModel;
-};
+    { timestamps: false },
+  )
+  return operationModel
+}
