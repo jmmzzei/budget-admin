@@ -9,7 +9,7 @@ exports.getAllOperations = async (req, res) => {
     })
     returnResponse('success', res, operations)
   } catch (error) {
-    returnResponse('error', res, error)
+    returnResponse('error', res)
   }
 }
 
@@ -22,7 +22,7 @@ exports.getOperationGroup = async (req, res) => {
     })
     returnResponse('success', res, operationGroup)
   } catch (error) {
-    returnResponse('error', res, error)
+    returnResponse('error', res)
   }
 }
 
@@ -46,7 +46,7 @@ exports.getBalance = async (req, res) => {
     let balance = {
       income: incomeBalance,
       outcome: outcomeBalance,
-      total: totalBalance
+      total: totalBalance,
     }
     returnResponse('success', res, balance)
   } else {
@@ -64,10 +64,10 @@ exports.createOperation = async (req, res) => {
       date: date,
       type: type,
     })
-    
-     returnResponse('success', res, operation)
+
+    returnResponse('success', res, operation)
   } catch (error) {
-     returnResponse('error', res, error)
+    returnResponse('error', res)
   }
 }
 
@@ -78,9 +78,9 @@ exports.deleteOperation = async (req, res) => {
         id: req.params.id,
       },
     })
-     returnResponse('success', res, deleted)
+    returnResponse('success', res, deleted)
   } catch (error) {
-     returnResponse('error', res, error)
+    returnResponse('error', res)
   }
 }
 
@@ -97,8 +97,8 @@ exports.editOperation = async (req, res) => {
       },
     )
 
-     returnResponse('success', res, putResponse)
+    returnResponse('success', res, putResponse)
   } catch (error) {
-     returnResponse('error', res, error)
+    returnResponse('error', res)
   }
 }

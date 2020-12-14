@@ -1,3 +1,7 @@
-module.exports = function returnResponse(type, res, value) {
-  return res.json({status: type, data: value})
+module.exports = function returnResponse(
+  type,
+  res,
+  value = 'Ha ocurrido un error.',
+) {
+  return res.json({ status: type, data: value })
 }
