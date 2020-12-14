@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { API } from '../services/client'
 
-export const Balance = ({update}) => {
+export const Balance = ({ update }) => {
   let [balance, setBalance] = useState({ income: 0, outcome: 0, total: 0 })
 
   useEffect(() => {
-    fetch('/api/balance')
-      .then(res => res.json())
-      .then(data => {
-        setBalance(data.balance)
+    API.getBalance()
+      .then(response => {
+        if (response.status == 'success') setBalance(response.data)
+      })
+      .catch(err => {
+        alert('There is a server error')
       })
   }, [update])
 
