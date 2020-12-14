@@ -23,8 +23,21 @@ beforeAll(async () => {
   }
 })
 
-describe('GET /posts ', () => {
-  test('It should respond with posts', async () => {
-    expect(true).toBe(true)
+describe('GET / ', () => {
+  test('It should respond with operations', async () => {
+    const response = await request(app).get('/api/')
+    expect(response.statusCode).toBe(200)
+    expect(response.body.data.length).toBeGreaterThanOrEqual(1)
+    expect(response.body.status).toBe('success')
+    expect(response.body.data[0].id > response.body.data[1].id).toBe(true)
+  })
+})
+
+describe('GET /group ', () => {
+  test('It should respond with a group of variable length', async () => {
+    const response = await request(app).get('/api/group?q=2')
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('success')
+    expect(response.body.data[0].id > response.body.data[1].id).toBe(true)
   })
 })
