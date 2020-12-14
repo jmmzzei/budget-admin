@@ -1,14 +1,15 @@
 let operationModel = require('../models/index')['operation']
 let sequelize = require('../models/index')['sequelize']
+const returnResponse = require('../services/responseService')
 
 exports.getAllOperations = async (req, res) => {
   try {
     let operations = await operationModel.findAll({
       order: [['id', 'DESC']],
     })
-    return res.json({ operations: operations })
+    returnResponse('success', res, operations)
   } catch (error) {
-    return res.status(500).send(error.message)
+    returnResponse('error', res)
   }
 }
 
@@ -19,9 +20,9 @@ exports.getOperationGroup = async (req, res) => {
       limit: limit,
       order: [['id', 'DESC']],
     })
-    res.json({ operationGroup: operationGroup })
+    returnResponse('success', res, operationGroup)
   } catch (error) {
-    return res.status(500).send(error.message)
+    returnResponse('error', res)
   }
 }
 
@@ -42,15 +43,14 @@ exports.getBalance = async (req, res) => {
   let outcomeBalance = await getBalanceByType('Outcome')
   if (incomeBalance && outcomeBalance) {
     let totalBalance = incomeBalance - outcomeBalance
-    res.json({
-      balance: {
-        income: incomeBalance,
-        outcome: outcomeBalance,
-        total: totalBalance,
-      },
-    })
+    let balance = {
+      income: incomeBalance,
+      outcome: outcomeBalance,
+      total: totalBalance,
+    }
+    returnResponse('success', res, balance)
   } else {
-    return res.status(500)
+    returnResponse('error', res, 'Unable to calculate balance')
   }
 }
 
@@ -65,9 +65,9 @@ exports.createOperation = async (req, res) => {
       type: type,
     })
 
-    res.json({ created: JSON.stringify(operation) })
+    returnResponse('success', res, operation)
   } catch (error) {
-    return res.status(500).send(error.message)
+    returnResponse('error', res)
   }
 }
 
@@ -78,16 +78,16 @@ exports.deleteOperation = async (req, res) => {
         id: req.params.id,
       },
     })
-    res.json({ status: deleted })
+    returnResponse('success', res, deleted)
   } catch (error) {
-    return res.status(500).send(error.message)
+    returnResponse('error', res)
   }
 }
 
 exports.editOperation = async (req, res) => {
   try {
-    let { concept, amount, date, id } = req.body
-
+    let { concept, amount, date } = req.body
+    let { id } = req.params
     let putResponse = await operationModel.update(
       { concept: concept, amount: amount, date: date },
       {
@@ -97,8 +97,8 @@ exports.editOperation = async (req, res) => {
       },
     )
 
-    res.json({ opedited: putResponse })
+    returnResponse('success', res, putResponse)
   } catch (error) {
-    return res.status(500).send(error.message)
+    returnResponse('error', res)
   }
 }

@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -24,7 +25,7 @@
   },
   "scripts": {
     "build": "node ./buildScript",
-    "start:server": "cross-env NODE_ENV=development nodemon server/index.js",
+    "start:server": "cross-env NODE_ENV=development nodemon server/server.js",
     "start:react": "react-scripts start",
     "build:react": "react-scripts build",
     "test:react": "react-scripts test",
@@ -36,11 +37,7 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -51,7 +48,7 @@
   "devDependencies": {
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
-    "jest": "^26.6.3",
+    "jest": "24.9.0",
     "nodemon": "^2.0.6",
     "supertest": "^6.0.1"
   }

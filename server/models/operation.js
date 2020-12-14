@@ -21,17 +21,17 @@ module.exports = (sequelize, type) => {
       },
       date: {
         type: type.DATEONLY,
-        defaultValue: sequelize.NOW,
+        defaultValue: new Date(),
         allowNull: false,
       },
       createdat: {
         type: type.DATEONLY,
-        defaultValue: sequelize.NOW,
+        defaultValue: new Date(),
         allowNull: false,
       },
       updatedat: {
         type: type.DATEONLY,
-        defaultValue: sequelize.NOW,
+        defaultValue: new Date(),
         allowNull: false,
       },
     },
