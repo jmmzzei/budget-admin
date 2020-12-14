@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Icon from '@material-ui/core/Icon'
 import { Item } from './Item'
+import { API } from '../services/client'
 
 export const List = ({ update, onUpdate, reduced, longListIsVisible }) => {
   let [operations, setOperations] = useState([])
@@ -12,18 +13,26 @@ export const List = ({ update, onUpdate, reduced, longListIsVisible }) => {
 
   useEffect(() => {
     if (reduced) {
-      fetch('/api/group?q=10')
-        .then(res => res.json())
-        .then(data => {
-          setOperations(data.operationGroup)
-          setLoading(false)
+      API.getGroup(10)
+        .then(response => {
+          if (response.status == 'success') {
+            setOperations(response.data)
+            setLoading(false)
+          }
+        })
+        .catch(err => {
+          alert('There is a server error')
         })
     } else {
-      fetch('/api/')
-        .then(res => res.json())
-        .then(data => {
-          setOperations(data.operations)
-          setLoading(false)
+      API.getAll()
+        .then(response => {
+          if (response.status == 'success') {
+            setOperations(response.data)
+            setLoading(false)
+          }
+        })
+        .catch(err => {
+          alert('There is a server error')
         })
     }
   }, [update])
