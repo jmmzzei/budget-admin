@@ -38,6 +38,7 @@ async function populateOperations() {
         amount: 850,
         date: new Date(),
         type: 'Income',
+
       },
     ])
     if (response.length == 6) {

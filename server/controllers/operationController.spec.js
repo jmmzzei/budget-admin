@@ -41,7 +41,6 @@ describe('GET /group ', () => {
     expect(response.body.data[0].id > response.body.data[1].id).toBe(true)
   })
 })
-
 describe('GET /balance ', () => {
   test('It should respond with the balance', async () => {
     const response = await request(app).get('/api/balance')
