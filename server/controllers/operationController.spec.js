@@ -41,3 +41,28 @@ describe('GET /group ', () => {
     expect(response.body.data[0].id > response.body.data[1].id).toBe(true)
   })
 })
+describe('GET /balance ', () => {
+  test('It should respond with the balance', async () => {
+    const response = await request(app).get('/api/balance')
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('success')
+    expect(typeof response.body.data.income).toBe('number')
+    expect(typeof response.body.data.outcome).toBe('number')
+    expect(typeof response.body.data.total).toBe('number')
+  })
+})
+
+describe('POST / ', () => {
+  test('It should respond with the created operation', async () => {
+    const response = await request(app).post('/api/').send({
+      type: 'Income',
+      amount: 200,
+      concept: 'Shop',
+      date: new Date(),
+    })
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('success')
+    expect(response.body.data.type).toBe('Income')
+    expect(response.body.data.amount).toBe(200)
+  })
+})

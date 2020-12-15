@@ -4,46 +4,41 @@ async function populateOperations() {
   try {
     const response = await operation.bulkCreate([
       {
-        id: 1,
-        concept: '',
-        amount: 123,
-        date: new Date(),
-        type: 'Income',
-      },
-      {
-        id: 2,
-        concept: '',
-        amount: 1123,
-        date: new Date(),
-        type: 'Income',
-      },
-      {
-        id: 3,
-        concept: '',
-        amount: 2123,
-        date: new Date(),
-        type: 'Income',
-      },
-      {
-        id: 4,
-        concept: '',
-        amount: 1223,
+        concept: 'Food',
+        amount: 200,
         date: new Date(),
         type: 'Outcome',
       },
       {
-        id: 5,
-        concept: '',
-        amount: 1523,
+        concept: 'Friends',
+        amount: 100,
+        date: new Date(),
+        type: 'Outcome',
+      },
+      {
+        concept: 'Job',
+        amount: 3500,
         date: new Date(),
         type: 'Income',
       },
       {
-        id: 6,
-        concept: '',
-        amount: 1923,
+        concept: 'Food',
+        amount: 50,
         date: new Date(),
         type: 'Outcome',
+      },
+      {
+        concept: 'Shop',
+        amount: 230,
+        date: new Date(),
+        type: 'Outcome',
+      },
+      {
+        concept: 'Sell',
+        amount: 850,
+        date: new Date(),
+        type: 'Income',
+
       },
     ])
     if (response.length == 6) {
