@@ -52,3 +52,18 @@ describe('GET /balance ', () => {
     expect(typeof response.body.data.total).toBe('number')
   })
 })
+
+describe('POST / ', () => {
+  test('It should respond with the created operation', async () => {
+    const response = await request(app).post('/api/').send({
+      type: 'Income',
+      amount: 200,
+      concept: 'Shop',
+      date: new Date(),
+    })
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('success')
+    expect(response.body.data.type).toBe('Income')
+    expect(response.body.data.amount).toBe(200)
+  })
+})
